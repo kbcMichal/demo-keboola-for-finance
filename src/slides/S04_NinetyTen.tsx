@@ -3,7 +3,7 @@ import { AnimatedEntry } from '../components/AnimatedEntry';
 
 const rows = [
   {
-    std: { title: 'Data Model (24 tables)', desc: '14 dimensions, 2 fact tables, 1 mart, 2 intermediate, 5 validation — same schema every time' },
+    std: { title: 'Data Model', desc: 'Dimensions, fact tables, mart, intermediate, and validation tables — same schema every time' },
     cust: { title: 'ERP Connectors', desc: "Configure extractors for Subsidiary, FX Rates, Chart of Accounts, and GL entries from the client's ERP" },
   },
   {

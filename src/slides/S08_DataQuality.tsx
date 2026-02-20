@@ -6,7 +6,10 @@ const checks = [
   { icon: '\u26A0', color: 'var(--amber)', bg: 'var(--amber-dim)', title: 'Unassigned Accounts', desc: 'GL entries referencing accounts not in DIM_COA' },
   { icon: '\u2716', color: 'var(--red)', bg: 'var(--red-dim)', title: 'FININ Assignment Bugs', desc: 'Broken mappings: missing codes, non-leaf targets' },
   { icon: '\u21C4', color: 'var(--blue-light)', bg: 'var(--blue-dim)', title: 'Local vs Consolidated', desc: 'Sum of local values matches consolidated rollup' },
-  { icon: '$', color: 'var(--purple)', bg: 'var(--purple-dim)', title: 'Missing FX Rates', desc: 'Entity-period combos with no exchange rate' },
+  { icon: '$', color: 'var(--purple)', bg: 'var(--purple-dim)', title: 'Missing FX Rates', desc: 'Reporting currency conversion gaps per entity-period' },
+  { icon: '$', color: 'var(--teal)', bg: 'var(--teal-dim)', title: 'Missing FX Rates (SC)', desc: 'Secondary currency conversion gaps' },
+  { icon: '\u21CB', color: 'var(--amber)', bg: 'var(--amber-dim)', title: 'Intercompany Balance', desc: 'Sender vs receiver intercompany reconciliation' },
+  { icon: '\u2211', color: 'var(--green)', bg: 'var(--green-dim)', title: 'Group Balance Check', desc: 'Consolidated group-level balance validation' },
 ];
 
 export function S08_DataQuality() {
@@ -20,29 +23,29 @@ export function S08_DataQuality() {
       </AnimatedEntry>
       <AnimatedEntry delay={0.2}>
         <p className="subtitle" style={{ marginBottom: 28, fontSize: '1rem', maxWidth: 750 }}>
-          Five automated checks run after every pipeline execution.<br />
+          Eight automated checks run after every pipeline execution.<br />
           Finance teams see issues in the app and resolve them directly.
         </p>
       </AnimatedEntry>
-      <AnimatedEntry delay={0.3} style={{ width: '100%', maxWidth: 900 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <AnimatedEntry delay={0.3} style={{ width: '100%', maxWidth: 940 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {checks.map((c) => (
             <div key={c.title} style={{
-              display: 'flex', alignItems: 'center', gap: 16,
-              padding: '16px 20px', background: 'var(--navy-light)',
-              border: '1px solid rgba(255,255,255,0.06)', borderRadius: 10,
+              display: 'flex', alignItems: 'center', gap: 14,
+              padding: '10px 18px', background: 'var(--navy-light)',
+              border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8,
             }}>
               <div style={{
-                width: 40, height: 40, borderRadius: 10, display: 'flex',
-                alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem',
+                width: 34, height: 34, borderRadius: 8, display: 'flex',
+                alignItems: 'center', justifyContent: 'center', fontSize: '0.95rem',
                 flexShrink: 0, background: c.bg,
               }}>
                 <span style={{ color: c.color }}>{c.icon}</span>
               </div>
-              <div style={{ minWidth: 180, flexShrink: 0 }}>
-                <span style={{ fontSize: '0.95rem', fontWeight: 600 }}>{c.title}</span>
+              <div style={{ minWidth: 175, flexShrink: 0 }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{c.title}</span>
               </div>
-              <span style={{ fontSize: '0.85rem', color: 'var(--gray-400)', textAlign: 'left' }}>
+              <span style={{ fontSize: '0.8rem', color: 'var(--gray-400)', textAlign: 'left' }}>
                 {c.desc}
               </span>
             </div>

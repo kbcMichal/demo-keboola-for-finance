@@ -3,7 +3,7 @@ import { AnimatedEntry } from '../components/AnimatedEntry';
 
 const points = [
   'Standardized data model & pipeline \u2014 90% reusable across clients',
-  'ERP-agnostic \u2014 only T2 Journal Entries and MAP tables are custom',
+  'ERP-agnostic \u2014 T2 Journal Entries is the main custom step, input mappings and MAP tables adapt per ERP',
   'Self-service data quality \u2014 finance fixes issues, not IT',
   'React Data App included \u2014 full BI layer optional',
   'Reusable datasets feed margin analysis, forecasting, and more',

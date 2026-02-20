@@ -83,7 +83,7 @@ export function PipelineFlow() {
         </span>
         <span style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
           <span style={{ width: 12, height: 12, borderRadius: 3, background: 'rgba(245,158,11,0.3)', border: '1px solid rgba(245,158,11,0.5)', display: 'inline-block' }} />
-          Custom per client
+          Requires per-ERP customization
         </span>
       </motion.div>
 

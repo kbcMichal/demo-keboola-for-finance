@@ -241,6 +241,44 @@ export const tables: TableDef[] = [
       { name: 'entry_count', type: 'INT' },
     ],
   },
+  {
+    name: 'FT_MISSING_FX_RATES',
+    layer: 'validation',
+    columns: [
+      { name: 'business_unit_fk', type: 'VARCHAR', fk: 'DIM_BUSINESS_UNIT' },
+      { name: 'period', type: 'VARCHAR' },
+      { name: 'currency_from', type: 'VARCHAR' },
+      { name: 'sum_unconverted', type: 'DECIMAL' },
+    ],
+  },
+  {
+    name: 'FT_MISSING_FX_RATES_SC',
+    layer: 'validation',
+    columns: [
+      { name: 'business_unit_fk', type: 'VARCHAR', fk: 'DIM_BUSINESS_UNIT' },
+      { name: 'period', type: 'VARCHAR' },
+      { name: 'currency_from', type: 'VARCHAR' },
+      { name: 'sum_unconverted', type: 'DECIMAL' },
+    ],
+  },
+  {
+    name: 'FT_INTERCOMPANY_BALANCE_CHECK',
+    layer: 'validation',
+    columns: [
+      { name: 'sender_unit', type: 'VARCHAR' },
+      { name: 'receiver_unit', type: 'VARCHAR' },
+      { name: 'period', type: 'VARCHAR' },
+      { name: 'net_difference', type: 'DECIMAL' },
+    ],
+  },
+  {
+    name: 'FT_GROUP_BALANCE_CHECK',
+    layer: 'validation',
+    columns: [
+      { name: 'period', type: 'VARCHAR' },
+      { name: 'total_balance', type: 'DECIMAL' },
+    ],
+  },
   // ── Staging / Intermediate ──
   {
     name: 'STG_COA_INPUT',
