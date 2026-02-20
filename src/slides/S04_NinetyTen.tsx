@@ -55,7 +55,7 @@ export function S04_NinetyTen() {
       </AnimatedEntry>
       <AnimatedEntry delay={0.3} style={{ width: '100%', maxWidth: 1080 }}>
         {/* Column headers — centered above their respective columns */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28, marginBottom: 12 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28, marginBottom: 12, width: '100%' }}>
           <div style={{ textAlign: 'center' }}>
             <span style={{
               display: 'inline-block', fontSize: '0.68rem', fontWeight: 600,
@@ -78,7 +78,7 @@ export function S04_NinetyTen() {
           </div>
         </div>
         {/* Paired rows - guarantees equal heights */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%' }}>
           {rows.map((row, i) => (
             <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28 }}>
               <ItemCard title={row.std.title} desc={row.std.desc} color="var(--green)" />
