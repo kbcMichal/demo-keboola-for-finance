@@ -15,7 +15,7 @@ const rows = [
     cust: { title: 'MAP Tables', desc: 'Account Type mapping (A/P/R/C/X) and FININ Structure — maintained by the client or SE via Google Sheets, Data App, or direct upload' },
   },
   {
-    std: { title: 'Validation & KPI Framework', desc: 'Quality checks + financial KPIs with RAG thresholds — all template-driven' },
+    std: { title: 'Validation & KPI Framework', desc: 'Quality checks + financial KPIs with Red/Amber/Green thresholds — all template-driven' },
     cust: { title: 'Business Unit Definitions', desc: 'Entity list, cost centers, regions — can be extracted from the ERP directly or loaded via spreadsheet / manual upload' },
   },
 ];

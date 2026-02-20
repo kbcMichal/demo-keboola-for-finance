@@ -59,7 +59,7 @@ export function S08_DataQuality() {
           borderRadius: 8, maxWidth: 700,
         }}>
           <p style={{ fontSize: '0.82rem', color: 'var(--gray-400)', margin: 0 }}>
-            <strong style={{ color: 'var(--blue-light)' }}>Thresholds are configurable</strong> &mdash; RAG status per metric with upper and lower bounds. Client defines what &quot;acceptable&quot; means.
+            <strong style={{ color: 'var(--blue-light)' }}>Thresholds are configurable</strong> &mdash; Red / Amber / Green status per metric with upper and lower bounds. Client defines what &quot;acceptable&quot; means.
           </p>
         </div>
       </AnimatedEntry>

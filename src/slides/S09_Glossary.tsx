@@ -101,7 +101,7 @@ function MetricDetail({ metric }: { metric: Metric }) {
       </div>
 
       <div>
-        <div style={{ fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gray-600)', marginBottom: 6 }}>RAG Thresholds</div>
+        <div style={{ fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gray-600)', marginBottom: 6 }}>Alert Thresholds</div>
         <ThresholdBar thresholds={metric.thresholds} />
       </div>
     </motion.div>
