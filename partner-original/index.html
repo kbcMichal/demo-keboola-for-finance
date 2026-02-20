@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keboola Financial Intelligence - Partner Technical Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2332;
+    --navy-light: #243044;
+
+    --blue: #0078D4;
+    --blue-light: #3399FF;
+    --blue-glow: rgba(0, 120, 212, 0.15);
+    --blue-dim: rgba(0, 120, 212, 0.08);
+    --white: #ffffff;
+
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
+    --green: #16a34a;
+    --green-dim: rgba(22, 163, 74, 0.12);
+    --amber: #f59e0b;
+    --amber-dim: rgba(245, 158, 11, 0.12);
+    --red: #ef4444;
+    --red-dim: rgba(239, 68, 68, 0.12);
+    --purple: #8b5cf6;
+    --purple-dim: rgba(139, 92, 246, 0.12);
+    --teal: #14b8a6;
+    --teal-dim: rgba(20, 184, 166, 0.12);
+
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .deck { position: relative; width: 100vw; height: 100vh; }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 60px 100px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: auto; }
+
+  .progress { position: fixed; bottom: 0; left: 0; height: 3px; background: var(--blue); transition: width 0.4s ease; z-index: 100; }
+  .counter { position: fixed; bottom: 16px; right: 24px; font-size: 13px; color: var(--gray-500); z-index: 100; font-variant-numeric: tabular-nums; }
+  .nav-hint { position: fixed; bottom: 16px; left: 24px; font-size: 12px; color: var(--gray-500); z-index: 100; opacity: 0.6; }
+
+  .click-left, .click-right { position: fixed; top: 0; bottom: 0; width: 12%; z-index: 50; cursor: pointer; }
+  .click-left { left: 0; }
+  .click-right { right: 0; }
+
+  .bg-gradient { background: linear-gradient(135deg, var(--navy) 0%, #0f1922 50%, var(--navy) 100%); }
+  .centered { display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+  /* Section indicator */
+  .section-indicator { position: fixed; top: 50%; left: 16px; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 100; }
+  .section-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gray-600); cursor: pointer; transition: all 0.3s ease; position: relative; }
+  .section-dot.active { background: var(--blue); width: 8px; height: 24px; border-radius: 4px; }
+  .section-dot[title]:hover::after { content: attr(title); position: absolute; left: 20px; white-space: nowrap; font-size: 11px; color: var(--gray-400); background: var(--navy-light); padding: 4px 8px; border-radius: 4px; }
+
+  h1 { font-size: 3rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
+  h2 { font-size: 2.4rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 16px; }
+  h3 { font-size: 1.4rem; font-weight: 600; line-height: 1.3; margin-bottom: 12px; }
+
+  .subtitle { font-size: 1.2rem; color: var(--gray-400); font-weight: 400; line-height: 1.6; max-width: 800px; }
+  .label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--blue-light); margin-bottom: 14px; }
+  .highlight { color: var(--blue-light); }
+  .divider { width: 60px; height: 3px; background: var(--blue); border-radius: 2px; margin-bottom: 20px; }
+
+  .transition-text { font-size: 1.8rem; font-weight: 300; color: var(--gray-400); text-align: center; line-height: 1.5; max-width: 700px; }
+  .transition-text strong { color: var(--white); font-weight: 600; }
+
+  /* Grids */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; max-width: 1100px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; width: 100%; max-width: 1100px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; width: 100%; max-width: 1100px; }
+
+  /* Cards */
+  .card {
+    background: var(--navy-light);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+  .card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+  .card p { font-size: 0.88rem; color: var(--gray-400); line-height: 1.55; }
+  .card-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 14px; }
+
+  /* Standardized vs Custom cards */
+  .split-card { border-left: 3px solid; padding-left: 20px; }
+  .split-card.standard { border-color: var(--green); }
+  .split-card.custom { border-color: var(--amber); }
+  .split-badge { display: inline-block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 4px; margin-bottom: 8px; }
+  .split-badge.standard { background: var(--green-dim); color: var(--green); }
+  .split-badge.custom { background: var(--amber-dim); color: var(--amber); }
+
+  /* Pipeline flow */
+  .pipeline { display: flex; align-items: center; gap: 0; width: 100%; max-width: 1200px; margin-top: 16px; }
+  .pipe-step { flex: 1; text-align: center; position: relative; }
+  .pipe-box {
+    background: var(--navy-light);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px 10px;
+    margin: 0 4px;
+    min-height: 90px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .pipe-box.highlight-green { border-color: rgba(22,163,74,0.4); background: rgba(22,163,74,0.06); }
+  .pipe-box.highlight-amber { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.06); }
+  .pipe-num { font-size: 0.7rem; font-weight: 700; color: var(--blue-light); margin-bottom: 4px; }
+  .pipe-name { font-size: 0.78rem; font-weight: 600; line-height: 1.3; }
+  .pipe-desc { font-size: 0.68rem; color: var(--gray-500); margin-top: 4px; line-height: 1.3; }
+  .pipe-arrow { color: var(--gray-600); font-size: 1.2rem; flex-shrink: 0; width: 20px; text-align: center; }
+
+  /* Data model visualization */
+  .dm-container { width: 100%; max-width: 1200px; display: flex; gap: 16px; margin-top: 12px; }
+  .dm-layer { flex: 1; min-width: 0; }
+  .dm-layer-title {
+    font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 6px 10px; border-radius: 6px 6px 0 0; text-align: center;
+  }
+  .dm-layer-title.dim { background: rgba(0,120,212,0.15); color: var(--blue-light); }
+  .dm-layer-title.fact { background: rgba(22,163,74,0.15); color: var(--green); }
+  .dm-layer-title.mart { background: rgba(139,92,246,0.15); color: var(--purple); }
+  .dm-layer-title.val { background: rgba(245,158,11,0.15); color: var(--amber); }
+  .dm-layer-title.stg { background: rgba(148,163,184,0.12); color: var(--gray-400); }
+
+  .dm-tables {
+    background: var(--navy-light);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 0 0 6px 6px;
+    padding: 8px;
+  }
+  .dm-table {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    padding: 5px 8px;
+    border-radius: 4px;
+    margin-bottom: 3px;
+    cursor: default;
+    transition: background 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dm-table:hover { background: rgba(255,255,255,0.06); }
+  .dm-table:last-child { margin-bottom: 0; }
+  .dm-table .pk { color: var(--blue-light); font-size: 0.6rem; margin-left: 4px; opacity: 0.7; }
+
+
+  /* Stats row */
+  .stats-row { display: flex; gap: 36px; margin: 20px 0; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 2.2rem; font-weight: 700; color: var(--blue-light); line-height: 1; }
+  .stat-label { font-size: 0.78rem; color: var(--gray-500); margin-top: 4px; }
+
+  /* Metrics table */
+  .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 900px; width: 100%; }
+  .metric-item {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--navy-light);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .metric-code { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 600; color: var(--blue-light); min-width: 40px; }
+  .metric-name { font-size: 0.85rem; flex: 1; }
+  .metric-formula { font-size: 0.72rem; color: var(--gray-500); font-family: 'JetBrains Mono', monospace; }
+
+  /* Two column layout */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; max-width: 1100px; align-items: start; }
+  .two-col-wide { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; width: 100%; max-width: 1100px; align-items: start; }
+
+  /* DQ checks */
+  .dq-check {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 16px;
+    background: var(--navy-light);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  .dq-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0; }
+  .dq-check h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 2px; }
+  .dq-check p { font-size: 0.75rem; color: var(--gray-500); line-height: 1.4; }
+
+  /* Reuse arrows */
+  .reuse-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: start; max-width: 1000px; width: 100%; }
+  .reuse-source, .reuse-target { display: flex; flex-direction: column; gap: 8px; }
+  .reuse-item {
+    background: var(--navy-light);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+  }
+  .reuse-arrow { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--blue-light); font-size: 1.5rem; padding-top: 20px; }
+
+  /* Animations */
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .slide.active .animate-up { animation: slideUp 0.5s ease forwards; }
+  .slide.active .delay-1 { animation-delay: 0.1s; opacity: 0; }
+  .slide.active .delay-2 { animation-delay: 0.2s; opacity: 0; }
+  .slide.active .delay-3 { animation-delay: 0.3s; opacity: 0; }
+  .slide.active .delay-4 { animation-delay: 0.4s; opacity: 0; }
+  .slide.active .delay-5 { animation-delay: 0.5s; opacity: 0; }
+
+
+  /* Tabbed slide */
+  .tab-bar { display: flex; gap: 2px; margin-bottom: 16px; }
+  .tab-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    padding: 8px 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gray-500);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .tab-btn.active { background: var(--navy-light); color: var(--blue-light); border-color: rgba(0,120,212,0.3); }
+  .tab-content { display: none; width: 100%; max-width: 1200px; }
+  .tab-content.active { display: block; }
+  .tab-body {
+    background: var(--navy-light);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 0 8px 8px 8px;
+    padding: 20px;
+    min-height: 380px;
+    overflow-y: auto;
+    max-height: calc(100vh - 260px);
+  }
+
+  /* FININ hierarchy */
+  .hier-tree { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.8; }
+  .hier-tree .node { padding-left: 0; }
+  .hier-tree .node-l1 { padding-left: 24px; }
+  .hier-tree .node-l2 { padding-left: 48px; }
+  .hier-tree .node-l3 { padding-left: 72px; }
+  .hier-code { color: var(--blue-light); font-weight: 600; }
+  .hier-name { color: var(--gray-400); margin-left: 8px; }
+  .hier-type { color: var(--gray-600); font-size: 0.65rem; margin-left: 6px; }
+
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ==================== SLIDE 1: TITLE ==================== -->
+  <div class="slide bg-gradient centered" data-section="0">
+    <div class="label animate-up">Keboola Financial Solutions</div>
+    <h1 class="animate-up delay-1">Financial Intelligence</h1>
+    <div class="divider animate-up delay-2"></div>
+    <p class="subtitle animate-up delay-3">
+      A standardized framework for multi-entity financial consolidation,<br>
+      reporting, and data quality &mdash; built on Keboola.
+    </p>
+    <p class="animate-up delay-4" style="margin-top: 40px; font-size: 0.9rem; color: var(--gray-500);">
+      Technical Partner Overview
+    </p>
+  </div>
+
+  <!-- ==================== SLIDE 2: THE CHALLENGE ==================== -->
+  <div class="slide bg-gradient centered" data-section="0">
+    <div class="label animate-up">The Challenge</div>
+    <h2 class="animate-up delay-1">Every Finance Team Has the Same Problem</h2>
+    <p class="subtitle animate-up delay-2" style="margin-bottom: 28px;">
+      Multiple ERPs, different chart of accounts, different currencies &mdash;<br>
+      yet the CFO needs one consolidated view.
+    </p>
+    <div class="grid-4 animate-up delay-3">
+      <div class="card" style="text-align: center;">
+        <div class="card-icon" style="background: var(--red-dim); margin: 0 auto 14px;">
+          <span style="color: var(--red);">&#9888;</span>
+        </div>
+        <h3>Fragmented ERPs</h3>
+        <p>NetSuite, SAP, Xero, BC &mdash; each with its own GL structure</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="card-icon" style="background: var(--amber-dim); margin: 0 auto 14px;">
+          <span style="color: var(--amber);">&#8644;</span>
+        </div>
+        <h3>Manual Mapping</h3>
+        <p>Local accounts mapped to consolidated CoA in spreadsheets</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="card-icon" style="background: var(--purple-dim); margin: 0 auto 14px;">
+          <span style="color: var(--purple);">$</span>
+        </div>
+        <h3>FX Conversion</h3>
+        <p>Multi-currency entities need AVG and EOP rate handling</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="card-icon" style="background: var(--teal-dim); margin: 0 auto 14px;">
+          <span style="color: var(--teal);">?</span>
+        </div>
+        <h3>No Audit Trail</h3>
+        <p>Finance can't trace numbers back to source transactions</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 3: WHAT WE DELIVER ==================== -->
+  <div class="slide bg-gradient centered" data-section="0">
+    <div class="label animate-up">What the Solution Covers</div>
+    <h2 class="animate-up delay-1">End-to-End Financial Data Platform</h2>
+    <div class="grid-3 animate-up delay-2" style="margin-top: 16px;">
+      <div class="card" style="text-align: center;">
+        <div class="card-icon" style="background: var(--blue-dim); margin: 0 auto 14px;">
+          <span style="color: var(--blue-light);">&#9776;</span>
+        </div>
+        <h3>P&L Statement</h3>
+        <p>Hierarchical rollup by entity with FX conversion, YTD, and prior-year comparison</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="card-icon" style="background: var(--blue-dim); margin: 0 auto 14px;">
+          <span style="color: var(--blue-light);">&#9881;</span>
+        </div>
+        <h3>Balance Sheet</h3>
+        <p>Monthly snapshots with opening balances, synthetic equity entries, and carry-forward</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="card-icon" style="background: var(--green-dim); margin: 0 auto 14px;">
+          <span style="color: var(--green);">&#9670;</span>
+        </div>
+        <h3>12 Financial KPIs</h3>
+        <p>6 core values (Revenue, Expenses, Net Income, Assets, Liabilities, Equity) + 6 ratios (NPM, ROA, ROE, D/E, ER, CIR)</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="card-icon" style="background: var(--amber-dim); margin: 0 auto 14px;">
+          <span style="color: var(--amber);">&#10003;</span>
+        </div>
+        <h3>Data Quality Checks</h3>
+        <p>BS balance validation, unassigned accounts, local vs consolidated reconciliation, missing FX rates</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="card-icon" style="background: var(--purple-dim); margin: 0 auto 14px;">
+          <span style="color: var(--purple);">&#167;</span>
+        </div>
+        <h3>Business Glossary</h3>
+        <p>Co-created metric definitions, formulas, thresholds, and ownership &mdash; the semantic layer</p>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="card-icon" style="background: var(--teal-dim); margin: 0 auto 14px;">
+          <span style="color: var(--teal);">&#9998;</span>
+        </div>
+        <h3>Budget & Forecasting</h3>
+        <p>Actuals, Budget, Forecast modes built into the data model &mdash; ready for planning workflows</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 4: THE 90/10 RULE ==================== -->
+  <div class="slide bg-gradient" data-section="0" style="padding: 50px 80px;">
+    <div class="label animate-up" style="text-align: center; width: 100%;">The Value Proposition</div>
+    <h2 class="animate-up delay-1" style="text-align: center; width: 100%;">~90% Standardized. ~10% Custom Per Client.</h2>
+    <p class="subtitle animate-up delay-2" style="text-align: center; margin-bottom: 24px; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto;">
+      The data model and transformation pipeline are nearly identical across implementations.<br>Only the source connectors and a few mapping tables need client-specific work.
+    </p>
+    <div class="two-col animate-up delay-3">
+      <div>
+        <div class="split-badge standard">Standardized &mdash; Reusable Across Clients</div>
+        <div class="card split-card standard" style="margin-bottom: 12px;">
+          <h3>Data Model (24 tables)</h3>
+          <p>14 dimensions, 2 fact tables, 1 mart, 2 intermediate, 5 validation &mdash; same schema every time</p>
+        </div>
+        <div class="card split-card standard" style="margin-bottom: 12px;">
+          <h3>5 of 7 Transformations</h3>
+          <p>T0 Initiation, T1 COA Build, T3 Core Processing, T4 Validation, T6 KPI Metrics &mdash; zero custom SQL</p>
+        </div>
+        <div class="card split-card standard" style="margin-bottom: 12px;">
+          <h3>CoA Hierarchy Engine</h3>
+          <p>Recursive CTE builds L1&ndash;L10 levels, FININ consolidation mapping, leaf/parent flagging</p>
+        </div>
+        <div class="card split-card standard">
+          <h3>Validation & KPI Framework</h3>
+          <p>5 quality checks + 12 metrics with RAG thresholds &mdash; all template-driven</p>
+        </div>
+      </div>
+      <div>
+        <div class="split-badge custom">Custom Per Client</div>
+        <div class="card split-card custom" style="margin-bottom: 12px;">
+          <h3>ERP Connectors</h3>
+          <p>Configure extractors for Subsidiary, FX Rates, Chart of Accounts, and GL entries from the client's ERP</p>
+        </div>
+        <div class="card split-card custom" style="margin-bottom: 12px;">
+          <h3>T2 Journal Entry Mapping</h3>
+          <p>One transformation that maps the ERP's GL schema to our standardized journal format &mdash; sign convention, keys, entity scoping</p>
+        </div>
+        <div class="card split-card custom" style="margin-bottom: 12px;">
+          <h3>MAP Tables</h3>
+          <p>Account Type mapping (A/P/R/C/X) and FININ Structure &mdash; maintained by the client or SE via Google Sheets, Data App, or direct upload</p>
+        </div>
+        <div class="card split-card custom">
+          <h3>Business Unit Definitions</h3>
+          <p>Entity list, cost centers, regions &mdash; often consolidated outside ERPs, loaded via spreadsheet or manual upload</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 5: TRANSITION TO DATA MODEL ==================== -->
+  <div class="slide bg-gradient centered" data-section="1">
+    <p class="transition-text animate-up">
+      Let me show you<br><strong>the data model and pipeline.</strong>
+    </p>
+  </div>
+
+  <!-- ==================== SLIDE 6: DATA MODEL (TABBED) ==================== -->
+  <div class="slide bg-gradient" data-section="1" style="padding: 40px 60px; align-items: center; justify-content: flex-start; padding-top: 50px;">
+    <div class="label animate-up" style="text-align: center;">The Foundation</div>
+    <h2 class="animate-up delay-1" style="text-align: center; font-size: 2rem; margin-bottom: 12px;">Data Model &amp; Rules</h2>
+
+    <div class="tab-bar animate-up delay-2">
+      <button class="tab-btn active" onclick="switchTab('dm-tables')">Data Model</button>
+      <button class="tab-btn" onclick="switchTab('dm-hierarchy')">FININ Hierarchy</button>
+      <button class="tab-btn" onclick="switchTab('dm-rules')">Transformation Rules</button>
+    </div>
+
+    <!-- TAB 1: Data Model Tables -->
+    <div class="tab-content active" id="tab-dm-tables">
+      <div class="tab-body">
+        <div class="dm-container">
+          <div class="dm-layer" style="flex: 1.8;">
+            <div class="dm-layer-title dim">L1 Dimensions (14 tables)</div>
+            <div class="dm-tables">
+              <div class="dm-table">DIM_BUSINESS_UNIT <span class="pk">PK</span></div>
+              <div class="dm-table">DIM_BUSINESS_SUBUNIT <span class="pk">PK, FK</span></div>
+              <div class="dm-table">DIM_COA <span class="pk">PK, FK</span></div>
+              <div class="dm-table">DIM_CURRENCY</div>
+              <div class="dm-table">DIM_DATE</div>
+              <div class="dm-table">DIM_FX_RATE <span class="pk">PK</span></div>
+              <div class="dm-table">DIM_METRIC <span class="pk">PK, FK</span></div>
+              <div class="dm-table">DIM_METRIC_GROUP <span class="pk">PK</span></div>
+              <div class="dm-table">DIM_METRIC_THRESHOLD <span class="pk">PK, FK</span></div>
+              <div class="dm-table">DIM_DIMENSION <span class="pk">PK</span></div>
+              <div class="dm-table">DIM_DIMENSION_VALUE <span class="pk">PK, FK</span></div>
+              <div class="dm-table">DIM_UPLOAD_MODE <span class="pk">PK</span></div>
+              <div class="dm-table">MAP_ACCOUNT_TYPE</div>
+              <div class="dm-table">MAP_FININ_STRUCTURE</div>
+            </div>
+          </div>
+          <div class="dm-layer" style="flex: 1;">
+            <div class="dm-layer-title fact">L1 Facts (2 tables)</div>
+            <div class="dm-tables">
+              <div class="dm-table">FT_FIN_JOURNAL <span class="pk">PK, FK</span></div>
+              <div class="dm-table">FT_FIN_STAT_PERIOD <span class="pk">PK, FK</span></div>
+            </div>
+            <div style="height: 12px;"></div>
+            <div class="dm-layer-title mart">L2 Marts (1 table)</div>
+            <div class="dm-tables">
+              <div class="dm-table">FT_METRIC_VALUE <span class="pk">PK, FK</span></div>
+            </div>
+          </div>
+          <div class="dm-layer" style="flex: 1;">
+            <div class="dm-layer-title val">Validation (5 tables)</div>
+            <div class="dm-tables">
+              <div class="dm-table">COA_DEBUG_COUNT_CHECK</div>
+              <div class="dm-table">FT_BS_BALANCE_MONTHLY</div>
+              <div class="dm-table">FT_FININ_ASSIGNMENT_BUGS</div>
+              <div class="dm-table">FT_LOCAL_FININ_SUMS</div>
+              <div class="dm-table">UNASSIGNED_FIN_ACCOUNT</div>
+            </div>
+            <div style="height: 12px;"></div>
+            <div class="dm-layer-title stg">Intermediate (2 tables)</div>
+            <div class="dm-tables">
+              <div class="dm-table">STG_COA_INPUT</div>
+              <div class="dm-table">STG_JOURNAL_ENRICHED</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 16px; display: flex; gap: 20px; justify-content: center; font-size: 0.75rem; color: var(--gray-500);">
+          <span>5 Storage Buckets</span>
+          <span>&bull;</span>
+          <span>24 Tables</span>
+          <span>&bull;</span>
+          <span>249+ Column Descriptions</span>
+          <span>&bull;</span>
+          <span>All auto-scaffolded via CLI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: FININ Hierarchy -->
+    <div class="tab-content" id="tab-dm-hierarchy">
+      <div class="tab-body">
+        <div class="two-col" style="max-width: 100%;">
+          <div>
+            <h3 style="font-size: 1rem; margin-bottom: 12px; color: var(--blue-light);">Consolidation Structure (MAP_FININ_STRUCTURE)</h3>
+            <p style="font-size: 0.8rem; color: var(--gray-400); margin-bottom: 16px;">
+              9 rows. Rarely changes. Defines the top-level reporting hierarchy that local accounts map into.
+            </p>
+            <div class="hier-tree">
+              <div class="node"><span class="hier-code">BS</span> <span class="hier-name">Balance Sheet</span></div>
+              <div class="node-l1"><span class="hier-code">BSA99999</span> <span class="hier-name">Assets</span> <span class="hier-type">A/BS</span></div>
+              <div class="node-l1"><span class="hier-code">BSL99999</span> <span class="hier-name">Liabilities</span> <span class="hier-type">P/BS</span></div>
+              <div class="node-l2"><span class="hier-code">BSL19999</span> <span class="hier-name">Equity</span> <span class="hier-type">P/BS</span></div>
+              <div class="node-l3"><span class="hier-code">BSL14900</span> <span class="hier-name">Net income current year</span> <span class="hier-type">synthetic</span></div>
+              <div class="node-l3"><span class="hier-code">BSL14100</span> <span class="hier-name">Profit carried forward</span> <span class="hier-type">synthetic</span></div>
+              <div class="node-l3"><span class="hier-code">BSL14950</span> <span class="hier-name">Currency translation adj.</span> <span class="hier-type">future</span></div>
+              <div style="height: 12px;"></div>
+              <div class="node"><span class="hier-code">PL</span> <span class="hier-name">Profit &amp; Loss</span></div>
+              <div class="node-l1"><span class="hier-code">ISN99999</span> <span class="hier-name">Profit &amp; Loss</span> <span class="hier-type">R/PL</span></div>
+              <div class="node-l2"><span class="hier-code">ISR99999</span> <span class="hier-name">Revenues</span> <span class="hier-type">R/PL</span></div>
+              <div class="node-l2"><span class="hier-code">ISE99999</span> <span class="hier-name">Expenses</span> <span class="hier-type">C/PL</span></div>
+            </div>
+          </div>
+          <div>
+            <h3 style="font-size: 1rem; margin-bottom: 12px; color: var(--amber);">Account Type Mapping (MAP_ACCOUNT_TYPE)</h3>
+            <p style="font-size: 0.8rem; color: var(--gray-400); margin-bottom: 16px;">
+              ERP-agnostic. Maps each ERP's account types to 5 standard categories. Tailored per accounting system.
+            </p>
+            <div style="font-size: 0.78rem; line-height: 2;">
+              <div><span style="color: var(--green); font-weight: 600;">A</span> &mdash; Assets <span style="color: var(--gray-600);">(AcctRec, Bank, FixedAsset, OthCurrAsset, DeferExpense, UnbilledRec, OthAsset)</span></div>
+              <div><span style="color: var(--red); font-weight: 600;">P</span> &mdash; Liabilities <span style="color: var(--gray-600);">(OthCurrLiab, AcctPay, LongTermLiab, DeferRevenue, Equity)</span></div>
+              <div><span style="color: var(--blue-light); font-weight: 600;">R</span> &mdash; Revenue <span style="color: var(--gray-600);">(Income, OthIncome)</span></div>
+              <div><span style="color: var(--amber); font-weight: 600;">C</span> &mdash; Costs <span style="color: var(--gray-600);">(COGS, Expense, OthExpense)</span></div>
+              <div><span style="color: var(--gray-500); font-weight: 600;">X</span> &mdash; Other <span style="color: var(--gray-600);">(Stat, NonPosting)</span></div>
+            </div>
+            <div style="margin-top: 20px; padding: 12px; background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: 8px;">
+              <p style="font-size: 0.78rem; color: var(--gray-400);">
+                <strong style="color: var(--amber);">Tailored per ERP:</strong> Each accounting system has its own account type codes. The mapping table translates them to the 5 standard categories (A/P/R/C/X). This is what makes the pipeline ERP-agnostic.
+              </p>
+            </div>
+            <div style="margin-top: 16px; padding: 12px; background: rgba(0,120,212,0.06); border: 1px solid rgba(0,120,212,0.2); border-radius: 8px;">
+              <p style="font-size: 0.78rem; color: var(--gray-400);">
+                <strong style="color: var(--blue-light);">Both tables can be self-served</strong> &mdash; via Google Sheets, a Data App, or direct upload. Finance updates mappings without touching SQL.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Transformation Rules -->
+    <div class="tab-content" id="tab-dm-rules">
+      <div class="tab-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 100%;">
+
+          <div class="card" style="padding: 18px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <span style="background: var(--blue-dim); color: var(--blue-light); width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">1</span>
+              <h3 style="font-size: 0.95rem; margin: 0;">Entity &amp; Master Data Setup</h3>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--gray-400); line-height: 1.6; margin-bottom: 10px;">
+              Legal entities derived from ERP subsidiaries. Group entity added for consolidation. Currency list, FX rates (AVG + EOP), date spine, and upload modes (Actuals / Budget / Forecast) generated automatically.
+            </p>
+            <div style="font-size: 0.72rem; color: var(--gray-600);">T0 Initiation &bull; Standardized</div>
+          </div>
+
+          <div class="card" style="padding: 18px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <span style="background: var(--blue-dim); color: var(--blue-light); width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">2</span>
+              <h3 style="font-size: 0.95rem; margin: 0;">Chart of Accounts Hierarchy</h3>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--gray-400); line-height: 1.6; margin-bottom: 10px;">
+              ERP accounts mapped to standard types (A/P/R/C/X) and assigned to the FININ consolidation structure. Recursive hierarchy builds 10 levels with leaf/parent flagging and display-ready indented names.
+            </p>
+            <div style="font-size: 0.72rem; color: var(--gray-600);">T1 COA Build &bull; Standardized</div>
+          </div>
+
+          <div class="card" style="padding: 18px; border-color: rgba(245,158,11,0.25);">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <span style="background: var(--amber-dim); color: var(--amber); width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">3</span>
+              <h3 style="font-size: 0.95rem; margin: 0;">ERP Journal Entry Mapping</h3>
+              <span class="split-badge custom" style="margin: 0; font-size: 0.62rem;">Custom</span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--gray-400); line-height: 1.6; margin-bottom: 10px;">
+              The one transformation that's different per client. Maps the ERP's General Ledger into a standardized journal format. Applies sign convention, assigns entity scope, and optionally generates opening balance entries.
+            </p>
+            <div style="font-size: 0.72rem; color: var(--gray-600);">T2 Journal Entries &bull; Custom per client</div>
+          </div>
+
+          <div class="card" style="padding: 18px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <span style="background: var(--green-dim); color: var(--green); width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">4</span>
+              <h3 style="font-size: 0.95rem; margin: 0;">Financial Statement Engine</h3>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--gray-400); line-height: 1.6; margin-bottom: 10px;">
+              Builds P&L (flow-based, monthly) and Balance Sheet (cumulative within fiscal year). Rolls up leaf accounts through the hierarchy. Converts to reporting currency. Generates synthetic equity entries to tie P&L into BS.
+            </p>
+            <div style="font-size: 0.72rem; color: var(--gray-600);">T3 Core Processing &bull; Standardized</div>
+          </div>
+
+          <div class="card" style="padding: 18px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <span style="background: var(--purple-dim); color: var(--purple); width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">5</span>
+              <h3 style="font-size: 0.95rem; margin: 0;">Automated Data Quality</h3>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--gray-400); line-height: 1.6; margin-bottom: 10px;">
+              Five checks run after every pipeline execution: BS balance (A+L+E=0), unmapped accounts, broken FININ assignments, local vs. consolidated reconciliation, and missing FX rates.
+            </p>
+            <div style="font-size: 0.72rem; color: var(--gray-600);">T4 Validation &bull; Standardized</div>
+          </div>
+
+          <div class="card" style="padding: 18px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <span style="background: var(--teal-dim); color: var(--teal); width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">6</span>
+              <h3 style="font-size: 0.95rem; margin: 0;">KPI Metrics &amp; Comparatives</h3>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--gray-400); line-height: 1.6; margin-bottom: 10px;">
+              Computes 12 financial metrics (6 values + 6 ratios) with prior month, prior year, and YTD windows. Outputs in local currency + up to 2 secondary currencies.
+            </p>
+            <div style="font-size: 0.72rem; color: var(--gray-600);">T6 ADS Metrics &bull; Standardized</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 7: PIPELINE FLOW ==================== -->
+  <div class="slide bg-gradient centered" data-section="1">
+    <div class="label animate-up">The Pipeline</div>
+    <h2 class="animate-up delay-1" style="font-size: 2rem;">7 Transformations. 1 Orchestrated Flow.</h2>
+    <p class="subtitle animate-up delay-2" style="margin-bottom: 20px; font-size: 1rem;">
+      All SQL. All Snowflake. All parameterized with template variables.
+    </p>
+    <div class="pipeline animate-up delay-3">
+      <div class="pipe-step">
+        <div class="pipe-box highlight-green">
+          <div class="pipe-num">T0</div>
+          <div class="pipe-name">Initiation</div>
+          <div class="pipe-desc">Master data, FX, dates, codelists</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">&#8594;</div>
+      <div class="pipe-step">
+        <div class="pipe-box highlight-green">
+          <div class="pipe-num">T1</div>
+          <div class="pipe-name">COA Build</div>
+          <div class="pipe-desc">Recursive hierarchy, FININ mapping</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">&#8594;</div>
+      <div class="pipe-step">
+        <div class="pipe-box highlight-amber">
+          <div class="pipe-num">T2</div>
+          <div class="pipe-name">Journal Entries</div>
+          <div class="pipe-desc">ERP GL mapping (custom)</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">&#8594;</div>
+      <div class="pipe-step">
+        <div class="pipe-box highlight-green">
+          <div class="pipe-num">T3</div>
+          <div class="pipe-name">Core Processing</div>
+          <div class="pipe-desc">Rollup, FX, synthetics</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">&#8594;</div>
+      <div class="pipe-step">
+        <div class="pipe-box highlight-green">
+          <div class="pipe-num">T4</div>
+          <div class="pipe-name">Validation</div>
+          <div class="pipe-desc">5 quality checks</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">&#8594;</div>
+      <div class="pipe-step">
+        <div class="pipe-box highlight-green">
+          <div class="pipe-num">T6</div>
+          <div class="pipe-name">KPI Metrics</div>
+          <div class="pipe-desc">12 financial KPIs</div>
+        </div>
+      </div>
+    </div>
+    <div class="animate-up delay-4" style="margin-top: 16px; display: flex; gap: 24px; font-size: 0.78rem;">
+      <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: rgba(22,163,74,0.3); border: 1px solid rgba(22,163,74,0.5);"></span> Standardized (no custom SQL)</span>
+      <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: rgba(245,158,11,0.3); border: 1px solid rgba(245,158,11,0.5);"></span> Custom per client</span>
+    </div>
+    <div class="animate-up delay-5" style="margin-top: 20px; padding: 12px 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; max-width: 700px;">
+      <p style="font-size: 0.8rem; color: var(--gray-400); text-align: center;">
+        <strong style="color: var(--gray-400);">+ Separate flow:</strong> T5 COA Consolidation &mdash; on-demand, triggered when the UI app exports updated CoA structure
+      </p>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 8: DATA QUALITY ==================== -->
+  <div class="slide bg-gradient" data-section="2" style="padding: 50px 80px;">
+    <div class="label animate-up" style="text-align: center; width: 100%;">Self-Service Data Quality</div>
+    <h2 class="animate-up delay-1" style="text-align: center; width: 100%; font-size: 2rem;">Finance Fixes Issues. Not IT.</h2>
+    <p class="subtitle animate-up delay-2" style="text-align: center; margin-bottom: 20px; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; font-size: 1rem;">
+      Automated validation checks run after every pipeline execution. Finance teams see issues in the app and can resolve them without going back to the data team.
+    </p>
+    <div class="two-col animate-up delay-3">
+      <div>
+        <div class="dq-check">
+          <div class="dq-icon" style="background: var(--green-dim);"><span style="color: var(--green);">&#8801;</span></div>
+          <div>
+            <h4>BS Balance Validation</h4>
+            <p>Assets + Liabilities + Equity = 0 per entity per month. Catches FX gaps, missing opening balances, incomplete synthetic entries.</p>
+          </div>
+        </div>
+        <div class="dq-check">
+          <div class="dq-icon" style="background: var(--amber-dim);"><span style="color: var(--amber);">&#9888;</span></div>
+          <div>
+            <h4>Unassigned Accounts</h4>
+            <p>GL entries referencing accounts not in DIM_COA. Usually means the CoA mapping is incomplete &mdash; finance can add the missing mapping directly.</p>
+          </div>
+        </div>
+        <div class="dq-check">
+          <div class="dq-icon" style="background: var(--red-dim);"><span style="color: var(--red);">&#10006;</span></div>
+          <div>
+            <h4>FININ Assignment Bugs</h4>
+            <p>Journal entries with broken FININ mappings: missing codes, non-leaf targets, unmapped accounts. Pinpoints exactly which accounts need fixing.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="dq-check">
+          <div class="dq-icon" style="background: var(--blue-dim);"><span style="color: var(--blue-light);">&#8644;</span></div>
+          <div>
+            <h4>Local vs Consolidated Sums</h4>
+            <p>Verifies that the sum of local entity values matches the consolidated rollup. Catches MAP_FININ_STRUCTURE gaps and sign convention issues.</p>
+          </div>
+        </div>
+        <div class="dq-check">
+          <div class="dq-icon" style="background: var(--purple-dim);"><span style="color: var(--purple);">$</span></div>
+          <div>
+            <h4>Missing FX Rates</h4>
+            <p>Entity-period combinations with no exchange rate. Prevents silent zeros in converted values.</p>
+          </div>
+        </div>
+        <div style="margin-top: 12px; padding: 14px; background: rgba(0,120,212,0.06); border: 1px solid rgba(0,120,212,0.2); border-radius: 8px;">
+          <p style="font-size: 0.8rem; color: var(--gray-400);">
+            <strong style="color: var(--blue-light);">Thresholds are configurable</strong> &mdash; defined in the Business Glossary (DIM_METRIC_THRESHOLD). RAG status (Red/Amber/Green) per metric with upper and lower bounds. Client defines what "acceptable" means.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 9: BUSINESS GLOSSARY ==================== -->
+  <div class="slide bg-gradient centered" data-section="2">
+    <div class="label animate-up">The Semantic Layer</div>
+    <h2 class="animate-up delay-1" style="font-size: 2rem;">Business Glossary &mdash; Metrics Definition Workshop</h2>
+    <p class="subtitle animate-up delay-2" style="margin-bottom: 20px; font-size: 1rem; max-width: 850px;">
+      Similar to BDM workshops you already run, but focused on <span class="highlight" style="font-weight: 600;">metric definitions</span> rather than data entity models. We co-create formulas, thresholds, and ownership with the client.
+    </p>
+    <div class="metrics-grid animate-up delay-3">
+      <div class="metric-item">
+        <div class="metric-code">REV</div>
+        <div><div class="metric-name">Revenue</div><div class="metric-formula">SUM(ISR99999)</div></div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-code">EXP</div>
+        <div><div class="metric-name">Expenses</div><div class="metric-formula">SUM(ISE99999)</div></div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-code">NI</div>
+        <div><div class="metric-name">Net Income</div><div class="metric-formula">SUM(ISN99999)</div></div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-code">AST</div>
+        <div><div class="metric-name">Total Assets</div><div class="metric-formula">SUM(BSA99999)</div></div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-code">NPM</div>
+        <div><div class="metric-name">Net Profit Margin</div><div class="metric-formula">Net Income / Revenue</div></div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-code">ROA</div>
+        <div><div class="metric-name">Return on Assets</div><div class="metric-formula">Net Income / Total Assets</div></div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-code">ROE</div>
+        <div><div class="metric-name">Return on Equity</div><div class="metric-formula">Net Income / Equity</div></div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-code">D/E</div>
+        <div><div class="metric-name">Debt to Equity</div><div class="metric-formula">Liabilities / Equity</div></div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-code">ER</div>
+        <div><div class="metric-name">Expense Ratio</div><div class="metric-formula">Expenses / Revenue</div></div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-code">CIR</div>
+        <div><div class="metric-name">Cost-Income Ratio</div><div class="metric-formula">Expenses / Revenue</div></div>
+      </div>
+    </div>
+    <p class="animate-up delay-4" style="margin-top: 16px; font-size: 0.82rem; color: var(--gray-500); max-width: 700px; text-align: center;">
+      Each metric has: definition, formula, aggregation type, format (% / absolute), time granularity, RAG thresholds, and an owner. All stored in DIM_METRIC + DIM_METRIC_THRESHOLD.
+    </p>
+  </div>
+
+  <!-- ==================== SLIDE 10: VISUALIZATION OPTIONS ==================== -->
+  <div class="slide bg-gradient centered" data-section="2">
+    <div class="label animate-up">The Presentation Layer</div>
+    <h2 class="animate-up delay-1" style="font-size: 2rem;">Keboola Data App as Primary UI</h2>
+    <p class="subtitle animate-up delay-2" style="margin-bottom: 28px; max-width: 850px; font-size: 1rem;">
+      The #1 impression: Keboola provides a <span class="highlight" style="font-weight: 600;">React data app</span> that handles the entire visualization. The full BI layer can be skipped unless the customer specifically requests it.
+    </p>
+    <div class="grid-3 animate-up delay-3" style="margin-bottom: 24px;">
+      <div class="card" style="text-align: center; border-color: rgba(0,120,212,0.3);">
+        <div class="card-icon" style="background: var(--blue-dim); margin: 0 auto 14px;">
+          <span style="color: var(--blue-light);">&#9883;</span>
+        </div>
+        <h3>React Data App</h3>
+        <p>Full-featured financial reporting app built in React. Deployed as a Keboola Data App. Interactive, drill-down capable, AI-assisted.</p>
+        <div style="margin-top: 10px;"><span class="split-badge standard">Primary option</span></div>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="card-icon" style="background: rgba(255,255,255,0.04); margin: 0 auto 14px;">
+          <span style="color: var(--gray-400);">&#9776;</span>
+        </div>
+        <h3>Power BI / Tableau</h3>
+        <p>Data model is BI-ready. Same warehouse tables can feed any BI tool if the client already has one.</p>
+        <div style="margin-top: 10px;"><span class="split-badge custom">If requested</span></div>
+      </div>
+      <div class="card" style="text-align: center;">
+        <div class="card-icon" style="background: rgba(255,255,255,0.04); margin: 0 auto 14px;">
+          <span style="color: var(--gray-400);">&#9997;</span>
+        </div>
+        <h3>Streamlit / Custom</h3>
+        <p>For clients who want a custom dashboard or already have a Streamlit stack. The data layer is the same.</p>
+        <div style="margin-top: 10px;"><span class="split-badge custom">If requested</span></div>
+      </div>
+    </div>
+    <p class="subtitle animate-up delay-4" style="font-size: 0.95rem; max-width: 700px;">
+      The real intelligence is <span class="highlight" style="font-weight: 600;">behind the scenes</span> &mdash; in the data integration, transformation, and consolidation layer. The visualization is just the tip.
+    </p>
+  </div>
+
+  <!-- ==================== SLIDE 11: LIVE DEMO TRANSITION ==================== -->
+  <div class="slide bg-gradient centered" data-section="2">
+    <p class="transition-text animate-up">
+      Let me <strong>switch to the app</strong><br>and show you what the client sees.
+    </p>
+    <p class="animate-up delay-2" style="margin-top: 24px; font-size: 0.9rem; color: var(--gray-500);">
+      Dashboard &bull; P&L Report &bull; Balance Sheet &bull; Journal Drill-Down &bull; Data Quality &bull; AI Assistant
+    </p>
+  </div>
+
+  <!-- ==================== SLIDE 12: REUSABLE DATASETS ==================== -->
+  <div class="slide bg-gradient centered" data-section="3">
+    <div class="label animate-up">Beyond Core Reporting</div>
+    <h2 class="animate-up delay-1" style="font-size: 2rem;">Unified Data Model = Reusable Datasets</h2>
+    <p class="subtitle animate-up delay-2" style="margin-bottom: 24px; font-size: 1rem; max-width: 800px;">
+      Once you have the unified GL, chart of accounts, and entity structure &mdash; you can feed it into many downstream use cases without rebuilding the foundation.
+    </p>
+    <div class="reuse-grid animate-up delay-3">
+      <div class="reuse-source">
+        <div style="font-size: 0.78rem; font-weight: 600; color: var(--blue-light); margin-bottom: 8px; text-align: center;">Core Financial Tables</div>
+        <div class="reuse-item" style="border-left: 3px solid var(--blue-light);">FT_FIN_STAT_PERIOD &mdash; P&L and BS by entity/month</div>
+        <div class="reuse-item" style="border-left: 3px solid var(--blue-light);">FT_FIN_JOURNAL &mdash; All GL transactions, normalized</div>
+        <div class="reuse-item" style="border-left: 3px solid var(--blue-light);">DIM_COA &mdash; Unified chart of accounts hierarchy</div>
+        <div class="reuse-item" style="border-left: 3px solid var(--blue-light);">DIM_BUSINESS_UNIT &mdash; Entity master</div>
+        <div class="reuse-item" style="border-left: 3px solid var(--blue-light);">FT_METRIC_VALUE &mdash; Pre-calculated KPIs</div>
+      </div>
+      <div class="reuse-arrow" style="gap: 8px; font-size: 1.2rem; padding-top: 30px;">
+        <span>&#8594;</span>
+        <span>&#8594;</span>
+        <span>&#8594;</span>
+        <span>&#8594;</span>
+        <span>&#8594;</span>
+      </div>
+      <div class="reuse-target">
+        <div style="font-size: 0.78rem; font-weight: 600; color: var(--green); margin-bottom: 8px; text-align: center;">Downstream Use Cases</div>
+        <div class="reuse-item" style="border-left: 3px solid var(--green);">Margin Analysis &mdash; by product, customer, segment</div>
+        <div class="reuse-item" style="border-left: 3px solid var(--green);">Customer Profitability &mdash; revenue/cost by customer</div>
+        <div class="reuse-item" style="border-left: 3px solid var(--green);">Cash Flow Forecasting &mdash; trend-based projections</div>
+        <div class="reuse-item" style="border-left: 3px solid var(--green);">Variance Analysis &mdash; Actual vs Budget vs Forecast</div>
+        <div class="reuse-item" style="border-left: 3px solid var(--green);">Board Reporting &mdash; automated executive packs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 13: WHY KEBOOLA ==================== -->
+  <div class="slide bg-gradient centered" data-section="3">
+    <div class="label animate-up">USP</div>
+    <h2 class="animate-up delay-1" style="font-size: 2rem;">Why Build Financial Solutions on Keboola</h2>
+    <div class="grid-2 animate-up delay-2" style="margin-top: 16px; max-width: 950px;">
+      <div class="card">
+        <h3>Governed End-to-End</h3>
+        <p>Every action &mdash; by human or application &mdash; is traceable. Full lineage from source ERP to dashboard value. Essential for financial data.</p>
+      </div>
+      <div class="card">
+        <h3>300+ Connectors</h3>
+        <p>No matter the ERP &mdash; NetSuite, SAP, Xero, BC, Odoo, QuickBooks &mdash; there's a connector. Authentication, pagination, rate limiting handled.</p>
+      </div>
+      <div class="card">
+        <h3>Scaffold Automation</h3>
+        <p>Our internal tooling (FIIA) generates the entire project &mdash; 5 buckets, 24 tables, 7 transformations, 2 flows &mdash; in minutes via CLI.</p>
+      </div>
+      <div class="card">
+        <h3>Data App Hosting</h3>
+        <p>Deploy the React app as a Keboola Data App. No separate infrastructure needed. The client gets a URL, not a deployment problem.</p>
+      </div>
+      <div class="card">
+        <h3>Self-Service Inputs</h3>
+        <p>MAP tables, manual inputs, cost center lists &mdash; loaded via Google Sheets, Data Apps, or CSV upload. Finance teams self-serve without SQL.</p>
+      </div>
+      <div class="card">
+        <h3>AI-Ready (KAI)</h3>
+        <p>Business glossary feeds the AI assistant. KAI understands the metric definitions and can answer questions in context.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 14: IMPLEMENTATION APPROACH ==================== -->
+  <div class="slide bg-gradient centered" data-section="3">
+    <div class="label animate-up">Implementation</div>
+    <h2 class="animate-up delay-1" style="font-size: 2rem;">How We Deliver Together</h2>
+    <p class="subtitle animate-up delay-2" style="margin-bottom: 28px; font-size: 1.05rem;">
+      Discovery workshop, automated scaffold, one custom transformation, iterate on data quality.
+    </p>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 1100px; width: 100%;" class="animate-up delay-3">
+      <div style="text-align: center;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--blue-glow); color: var(--blue-light); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; margin: 0 auto 14px;">1</div>
+        <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Discovery</h3>
+        <p style="font-size: 0.95rem; color: var(--gray-400); line-height: 1.5;">ERP sources, CoA structure,<br>metric definitions</p>
+      </div>
+      <div style="text-align: center;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--blue-glow); color: var(--blue-light); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; margin: 0 auto 14px;">2</div>
+        <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Scaffold</h3>
+        <p style="font-size: 0.95rem; color: var(--gray-400); line-height: 1.5;">Run CLI, configure extractors,<br>set up MAP tables</p>
+      </div>
+      <div style="text-align: center;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(245,158,11,0.15); color: var(--amber); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; margin: 0 auto 14px;">3</div>
+        <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Customize T2</h3>
+        <p style="font-size: 0.95rem; color: var(--gray-400); line-height: 1.5;">Map the ERP's GL schema<br>to standard journal format</p>
+      </div>
+      <div style="text-align: center;">
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--green-dim); color: var(--green); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; margin: 0 auto 14px;">4</div>
+        <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Validate &amp; Deploy</h3>
+        <p style="font-size: 0.95rem; color: var(--gray-400); line-height: 1.5;">Run pipeline, fix DQ issues,<br>deploy Data App</p>
+      </div>
+    </div>
+    <div class="stats-row animate-up delay-4" style="margin-top: 24px;">
+      <div class="stat">
+        <div class="stat-num">24</div>
+        <div class="stat-label">tables scaffolded</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">7</div>
+        <div class="stat-label">transformations</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">~90%</div>
+        <div class="stat-label">reusable SQL</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">1</div>
+        <div class="stat-label">custom transformation</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 15: KEBOOLA COMPONENTS USED ==================== -->
+  <div class="slide bg-gradient centered" data-section="3">
+    <div class="label animate-up">Under the Hood</div>
+    <h2 class="animate-up delay-1" style="font-size: 2rem;">Keboola Components Used</h2>
+    <p class="subtitle animate-up delay-2" style="margin-bottom: 24px; font-size: 1rem;">
+      Everything your team already knows. No new technology to learn.
+    </p>
+    <div class="grid-3 animate-up delay-3" style="max-width: 1000px;">
+      <div class="card" style="text-align: center; padding: 20px;">
+        <div style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue-light); margin-bottom: 12px;">Data In</div>
+        <div style="font-size: 0.92rem; line-height: 2;">
+          <div>ERP Extractors</div>
+          <div style="color: var(--gray-500);">Google Drive Extractor</div>
+          <div style="color: var(--gray-500);">Manual CSV Upload</div>
+        </div>
+      </div>
+      <div class="card" style="text-align: center; padding: 20px;">
+        <div style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--green); margin-bottom: 12px;">Transform &amp; Store</div>
+        <div style="font-size: 0.92rem; line-height: 2;">
+          <div>Snowflake SQL Transformations</div>
+          <div style="color: var(--gray-500);">Conditional Flows</div>
+          <div style="color: var(--gray-500);">Storage (5 buckets, 24 tables)</div>
+        </div>
+      </div>
+      <div class="card" style="text-align: center; padding: 20px;">
+        <div style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--purple); margin-bottom: 12px;">Consume</div>
+        <div style="font-size: 0.92rem; line-height: 2;">
+          <div>Data App (React)</div>
+          <div style="color: var(--gray-500);">KAI (AI Assistant)</div>
+          <div style="color: var(--gray-500);">BI Tools (optional)</div>
+        </div>
+      </div>
+    </div>
+    <div class="animate-up delay-4" style="margin-top: 20px; display: flex; gap: 20px; font-size: 0.88rem; color: var(--gray-500);">
+      <span>kbc CLI for scaffolding</span>
+      <span style="color: var(--gray-600);">&bull;</span>
+      <span>Template Variables</span>
+      <span style="color: var(--gray-600);">&bull;</span>
+      <span>Storage Metadata API</span>
+      <span style="color: var(--gray-600);">&bull;</span>
+      <span>Workspaces for ad-hoc SQL</span>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 16: CLOSING ==================== -->
+  <div class="slide bg-gradient centered" data-section="3">
+    <div class="label animate-up">Summary</div>
+    <h2 class="animate-up delay-1">Financial Intelligence on Keboola</h2>
+    <div class="divider animate-up delay-2"></div>
+    <div class="animate-up delay-3" style="max-width: 700px; text-align: left;">
+      <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px;">
+        <span style="color: var(--green); font-size: 1.1rem; margin-top: 2px;">&#10003;</span>
+        <span style="font-size: 1rem; line-height: 1.5;">Standardized data model &amp; pipeline &mdash; 90% reusable across clients</span>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px;">
+        <span style="color: var(--green); font-size: 1.1rem; margin-top: 2px;">&#10003;</span>
+        <span style="font-size: 1rem; line-height: 1.5;">ERP-agnostic &mdash; only T2 Journal Entries and MAP tables are custom</span>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px;">
+        <span style="color: var(--green); font-size: 1.1rem; margin-top: 2px;">&#10003;</span>
+        <span style="font-size: 1rem; line-height: 1.5;">Self-service data quality &mdash; finance fixes issues, not IT</span>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px;">
+        <span style="color: var(--green); font-size: 1.1rem; margin-top: 2px;">&#10003;</span>
+        <span style="font-size: 1rem; line-height: 1.5;">React Data App included &mdash; full BI layer optional</span>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px;">
+        <span style="color: var(--green); font-size: 1.1rem; margin-top: 2px;">&#10003;</span>
+        <span style="font-size: 1rem; line-height: 1.5;">Reusable datasets feed margin analysis, forecasting, and more</span>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 12px;">
+        <span style="color: var(--green); font-size: 1.1rem; margin-top: 2px;">&#10003;</span>
+        <span style="font-size: 1rem; line-height: 1.5;">All standard Keboola components &mdash; nothing new for your team to learn</span>
+      </div>
+    </div>
+    <p class="animate-up delay-4" style="margin-top: 32px; font-size: 1rem; color: var(--blue-light);">
+      Questions?
+    </p>
+  </div>
+
+</div>
+
+<!-- Progress bar -->
+<div class="progress" id="progress"></div>
+
+<!-- Section indicators -->
+<div class="section-indicator" id="sections">
+  <div class="section-dot" data-section="0" title="Context"></div>
+  <div class="section-dot" data-section="1" title="Data Model"></div>
+  <div class="section-dot" data-section="2" title="Quality"></div>
+  <div class="section-dot" data-section="3" title="Delivery"></div>
+</div>
+
+<!-- Counter -->
+<div class="counter" id="counter"></div>
+
+<!-- Nav hint -->
+<div class="nav-hint">&larr; &rarr; or click edges to navigate</div>
+
+<!-- Click zones -->
+<div class="click-left" id="clickLeft"></div>
+<div class="click-right" id="clickRight"></div>
+
+<script>
+  // Slide navigation
+  const slides = document.querySelectorAll('.slide');
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+  const sectionDots = document.querySelectorAll('.section-dot');
+  let current = 0;
+
+  function goTo(index) {
+    if (index < 0 || index >= slides.length) return;
+    slides[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+
+    const pct = ((current + 1) / slides.length) * 100;
+    progress.style.width = pct + '%';
+    counter.textContent = (current + 1) + ' / ' + slides.length;
+
+    const activeSection = slides[current].dataset.section;
+    sectionDots.forEach(dot => {
+      dot.classList.toggle('active', dot.dataset.section === activeSection);
+    });
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End') { e.preventDefault(); goTo(slides.length - 1); }
+  });
+
+  // Click zones
+  document.getElementById('clickLeft').addEventListener('click', prev);
+  document.getElementById('clickRight').addEventListener('click', next);
+
+  // Section dot clicks
+  sectionDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const targetSection = dot.dataset.section;
+      for (let i = 0; i < slides.length; i++) {
+        if (slides[i].dataset.section === targetSection) {
+          goTo(i);
+          return;
+        }
+      }
+    });
+  });
+
+  // Tab switching
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+    const target = document.getElementById('tab-' + tabId);
+    if (target) target.classList.add('active');
+
+    // Find the clicked button
+    const buttons = document.querySelectorAll('.tab-btn');
+    const tabMap = {'dm-tables': 0, 'dm-hierarchy': 1, 'dm-rules': 2};
+    if (tabMap[tabId] !== undefined) buttons[tabMap[tabId]].classList.add('active');
+  }
+
+  // Init
+  goTo(0);
+</script>
+
+</body>
+</html>

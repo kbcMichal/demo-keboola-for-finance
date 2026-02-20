@@ -1,0 +1,24 @@
+:root {
+  --navy: #1a2332;
+  --navy-light: #243044;
+
+  --blue: #0078D4;
+  --blue-light: #3399FF;
+  --blue-glow: rgba(0, 120, 212, 0.15);
+  --blue-dim: rgba(0, 120, 212, 0.08);
+  --white: #ffffff;
+
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --green: #16a34a;
+  --green-dim: rgba(22, 163, 74, 0.12);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.12);
+  --red: #ef4444;
+  --red-dim: rgba(239, 68, 68, 0.12);
+  --purple: #8b5cf6;
+  --purple-dim: rgba(139, 92, 246, 0.12);
+  --teal: #14b8a6;
+  --teal-dim: rgba(20, 184, 166, 0.12);
+}
