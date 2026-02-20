@@ -7,16 +7,16 @@ const rows = [
     cust: { title: 'ERP Connectors', desc: "Configure extractors for Subsidiary, FX Rates, Chart of Accounts, and GL entries from the client's ERP" },
   },
   {
-    std: { title: '5 of 7 Transformations', desc: 'T0 Initiation, T1 COA Build, T3 Core Processing, T4 Validation, T6 KPI Metrics — zero custom SQL' },
-    cust: { title: 'T2 Journal Entry Mapping', desc: "One transformation that maps the ERP's GL schema to our standardized journal format — sign convention, keys, entity scoping" },
+    std: { title: 'Transformation Pipeline', desc: 'Most of the 7 transformations are reusable — core logic, hierarchy build, validation, KPIs all stay. Input mappings and minor adjustments adapt per ERP.' },
+    cust: { title: 'T2 Journal Entry Mapping', desc: "The main custom transformation — maps the ERP's GL schema to the standardized journal format: sign convention, keys, entity scoping." },
   },
   {
     std: { title: 'CoA Hierarchy Engine', desc: 'Recursive CTE builds L1–L10 levels, FININ consolidation mapping, leaf/parent flagging' },
     cust: { title: 'MAP Tables', desc: 'Account Type mapping (A/P/R/C/X) and FININ Structure — maintained by the client or SE via Google Sheets, Data App, or direct upload' },
   },
   {
-    std: { title: 'Validation & KPI Framework', desc: '5 quality checks + 12 metrics with RAG thresholds — all template-driven' },
-    cust: { title: 'Business Unit Definitions', desc: 'Entity list, cost centers, regions — often consolidated outside ERPs, loaded via spreadsheet or manual upload' },
+    std: { title: 'Validation & KPI Framework', desc: 'Quality checks + financial KPIs with RAG thresholds — all template-driven' },
+    cust: { title: 'Business Unit Definitions', desc: 'Entity list, cost centers, regions — can be extracted from the ERP directly or loaded via spreadsheet / manual upload' },
   },
 ];
 

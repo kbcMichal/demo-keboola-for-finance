@@ -3,7 +3,7 @@ import { AnimatedEntry } from '../components/AnimatedEntry';
 
 const steps = [
   { num: 1, title: 'Discovery', desc: 'ERP sources, CoA structure, metric definitions', color: 'var(--blue-light)', bg: 'var(--blue-glow)' },
-  { num: 2, title: 'Scaffold', desc: 'Run CLI, configure extractors, set up MAP tables', color: 'var(--blue-light)', bg: 'var(--blue-glow)' },
+  { num: 2, title: 'Scaffold', desc: 'Run CLI, configure extractors, MAP tables', color: 'var(--blue-light)', bg: 'var(--blue-glow)' },
   { num: 3, title: 'Customize T2', desc: "Map the ERP's GL schema to standard journal format", color: 'var(--amber)', bg: 'rgba(245,158,11,0.15)' },
   { num: 4, title: 'Validate & Deploy', desc: 'Run pipeline, fix DQ issues, deploy Data App', color: 'var(--green)', bg: 'var(--green-dim)' },
 ];
@@ -12,7 +12,7 @@ const stats = [
   { num: '24', label: 'tables scaffolded' },
   { num: '7', label: 'transformations' },
   { num: '~90%', label: 'reusable SQL' },
-  { num: '1', label: 'custom transformation' },
+  { num: '1', label: 'main custom step' },
 ];
 
 export function S14_Implementation() {

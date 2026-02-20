@@ -79,7 +79,7 @@ export function PipelineFlow() {
       >
         <span style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
           <span style={{ width: 12, height: 12, borderRadius: 3, background: 'rgba(22,163,74,0.3)', border: '1px solid rgba(22,163,74,0.5)', display: 'inline-block' }} />
-          Standardized (no custom SQL)
+          Standardized (reusable core logic)
         </span>
         <span style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
           <span style={{ width: 12, height: 12, borderRadius: 3, background: 'rgba(245,158,11,0.3)', border: '1px solid rgba(245,158,11,0.5)', display: 'inline-block' }} />

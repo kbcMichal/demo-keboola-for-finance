@@ -11,7 +11,7 @@ export const pipelineSteps: PipelineStep[] = [
   { id: 'T2', name: 'Journal Entries', description: 'ERP GL mapping (custom)', variant: 'custom' },
   { id: 'T3', name: 'Core Processing', description: 'Rollup, FX, synthetics', variant: 'standard' },
   { id: 'T4', name: 'Validation', description: '5 quality checks', variant: 'standard' },
-  { id: 'T6', name: 'KPI Metrics', description: '12 financial KPIs', variant: 'standard' },
+  { id: 'T6', name: 'KPI Metrics', description: 'Financial KPIs', variant: 'standard' },
 ];
 
 export const separateFlow = {
