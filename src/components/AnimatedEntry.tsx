@@ -14,7 +14,7 @@ export function AnimatedEntry({ children, delay = 0, style, className }: Props) 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: 'easeOut' }}
-      style={style}
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', width: '100%', ...style }}
       className={className}
     >
       {children}

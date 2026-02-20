@@ -26,6 +26,5 @@ export const slideMetadata: SlideMetadata[] = [
   { id: 11, section: 3, title: 'Reusable Datasets' },
   { id: 12, section: 3, title: 'Why Keboola' },
   { id: 13, section: 3, title: 'Implementation' },
-  { id: 14, section: 3, title: 'Components Used' },
-  { id: 15, section: 3, title: 'Closing' },
+  { id: 14, section: 3, title: 'Closing' },
 ];

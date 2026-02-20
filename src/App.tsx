@@ -13,7 +13,6 @@ import { S11_LiveDemo } from './slides/S11_LiveDemo';
 import { S12_Reusable } from './slides/S12_Reusable';
 import { S13_WhyKeboola } from './slides/S13_WhyKeboola';
 import { S14_Implementation } from './slides/S14_Implementation';
-import { S15_Components } from './slides/S15_Components';
 import { S16_Closing } from './slides/S16_Closing';
 
 export default function App() {
@@ -34,7 +33,6 @@ export default function App() {
         <S12_Reusable />
         <S13_WhyKeboola />
         <S14_Implementation />
-        <S15_Components />
         <S16_Closing />
       </div>
     </DeckProvider>

@@ -12,7 +12,7 @@ const points = [
 
 export function S16_Closing() {
   return (
-    <SlideContainer index={15}>
+    <SlideContainer index={14}>
       <AnimatedEntry><div className="label">Summary</div></AnimatedEntry>
       <AnimatedEntry delay={0.1}><h2>Financial Intelligence on Keboola</h2></AnimatedEntry>
       <AnimatedEntry delay={0.2}><div className="divider" /></AnimatedEntry>
