@@ -50,7 +50,7 @@ export function S12_Reusable() {
               Unified Financial Data Model
             </div>
             <div style={{ fontSize: '0.78rem', color: 'var(--gray-500)' }}>
-              24 tables &middot; GL journals &middot; CoA hierarchy &middot; KPIs &middot; Validation
+              GL journals &middot; CoA hierarchy &middot; KPIs &middot; Validation &middot; Multi-currency
             </div>
           </div>
 

@@ -5,7 +5,7 @@ import { Card } from '../components/Card';
 const reasons = [
   { title: 'Governed End-to-End', desc: 'Every action \u2014 by human or application \u2014 is traceable. Full lineage from source ERP to dashboard value. Essential for financial data.' },
   { title: '300+ Connectors', desc: 'No matter the ERP \u2014 NetSuite, SAP, Xero, BC, Odoo, QuickBooks \u2014 there\'s a connector. Authentication, pagination, rate limiting handled.' },
-  { title: 'Scaffold Automation', desc: 'Our internal tooling (FIIA) generates the entire project \u2014 5 buckets, 24 tables, 7 transformations, 2 flows \u2014 in minutes via CLI.' },
+  { title: 'Scaffold Automation', desc: 'Our internal tooling generates the entire project \u2014 buckets, tables, transformations, flows \u2014 in minutes via CLI. Most of the pipeline is ready to run.' },
   { title: 'Data App Hosting', desc: 'Deploy the React app as a Keboola Data App. No separate infrastructure needed. The client gets a URL, not a deployment problem.' },
   { title: 'Self-Service Inputs', desc: 'MAP tables, manual inputs, cost center lists \u2014 loaded via Google Sheets, Data Apps, or CSV upload. Finance teams self-serve without SQL.' },
   { title: 'AI-Ready (KAI)', desc: 'Business glossary feeds the AI assistant. KAI understands the metric definitions and can answer questions in context.' },

@@ -27,7 +27,7 @@ export function S16_Closing() {
         </div>
       </AnimatedEntry>
       <AnimatedEntry delay={0.4}>
-        <p style={{ marginTop: 32, fontSize: '1rem', color: 'var(--blue-light)' }}>
+        <p style={{ marginTop: 32, fontSize: '1rem', color: 'var(--blue-light)', textAlign: 'center' }}>
           Questions?
         </p>
       </AnimatedEntry>

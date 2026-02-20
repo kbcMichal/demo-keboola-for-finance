@@ -20,7 +20,7 @@ export function S01_Title() {
         </p>
       </AnimatedEntry>
       <AnimatedEntry delay={0.4}>
-        <p style={{ marginTop: 40, fontSize: '0.9rem', color: 'var(--gray-500)' }}>
+        <p style={{ marginTop: 40, fontSize: '0.9rem', color: 'var(--gray-500)', textAlign: 'center' }}>
           Technical Partner Overview
         </p>
       </AnimatedEntry>
