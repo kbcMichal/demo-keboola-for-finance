@@ -18,13 +18,21 @@ import { useDeck } from '../deck/DeckContext';
 
 const nodeTypes = { tableNode: TableNode };
 
-const NODE_WIDTH = 200;
-const NODE_HEIGHT = 40;
+const NODE_WIDTH = 210;
+const NODE_HEIGHT = 44;
+
+// Only show core model tables: dimensions, facts, mart
+const coreLayers = new Set(['dimension', 'fact', 'mart']);
+const coreTables = tables.filter(t => coreLayers.has(t.layer));
+const coreTableNames = new Set(coreTables.map(t => t.name));
+const coreRelationships = relationships.filter(
+  r => coreTableNames.has(r.source) && coreTableNames.has(r.target)
+);
 
 function getLayoutedElements(nodes: Node[], edges: Edge[]) {
   const g = new dagre.graphlib.Graph();
   g.setDefaultEdgeLabel(() => ({}));
-  g.setGraph({ rankdir: 'LR', nodesep: 60, ranksep: 120 });
+  g.setGraph({ rankdir: 'LR', nodesep: 50, ranksep: 140, marginx: 40, marginy: 40 });
 
   nodes.forEach((node) => {
     g.setNode(node.id, { width: NODE_WIDTH, height: NODE_HEIGHT });
@@ -51,28 +59,26 @@ const layerMiniMapColors: Record<string, string> = {
   dimension: '#0078D4',
   fact: '#16a34a',
   mart: '#8b5cf6',
-  validation: '#f59e0b',
-  staging: '#64748b',
 };
 
 export function DataModelExplorer() {
   const { setInteractiveFocused } = useDeck();
 
   const { nodes: initialNodes, edges: initialEdges } = useMemo(() => {
-    const ns: Node[] = tables.map((t) => ({
+    const ns: Node[] = coreTables.map((t) => ({
       id: t.name,
       type: 'tableNode',
       position: { x: 0, y: 0 },
       data: { table: t },
     }));
 
-    const es: Edge[] = relationships.map((r, i) => ({
+    const es: Edge[] = coreRelationships.map((r, i) => ({
       id: `e-${i}`,
       source: r.source,
       target: r.target,
       type: 'smoothstep',
       animated: true,
-      style: { stroke: 'rgba(51, 153, 255, 0.3)', strokeWidth: 1.5 },
+      style: { stroke: 'rgba(51, 153, 255, 0.35)', strokeWidth: 1.5 },
     }));
 
     return getLayoutedElements(ns, es);
@@ -103,8 +109,8 @@ export function DataModelExplorer() {
         nodeTypes={nodeTypes}
         onPaneClick={onPaneClick}
         fitView
-        fitViewOptions={{ padding: 0.2 }}
-        minZoom={0.3}
+        fitViewOptions={{ padding: 0.15 }}
+        minZoom={0.4}
         maxZoom={2}
         proOptions={{ hideAttribution: true }}
       >
@@ -112,13 +118,30 @@ export function DataModelExplorer() {
         <Controls position="bottom-right" />
         <MiniMap
           nodeColor={(n) => {
-            const table = tables.find(t => t.name === n.id);
+            const table = coreTables.find(t => t.name === n.id);
             return table ? layerMiniMapColors[table.layer] || '#64748b' : '#64748b';
           }}
           maskColor="rgba(26,35,50,0.8)"
           style={{ background: 'var(--navy-light)' }}
         />
       </ReactFlow>
+      <div style={{
+        position: 'absolute', bottom: 12, left: 12, display: 'flex', gap: 16,
+        fontSize: '0.72rem', color: 'var(--gray-500)', pointerEvents: 'none',
+      }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ width: 10, height: 10, borderRadius: 3, background: 'rgba(0,120,212,0.3)', border: '1px solid rgba(0,120,212,0.5)' }} />
+          Dimensions (14)
+        </span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ width: 10, height: 10, borderRadius: 3, background: 'rgba(22,163,74,0.3)', border: '1px solid rgba(22,163,74,0.5)' }} />
+          Facts (2)
+        </span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span style={{ width: 10, height: 10, borderRadius: 3, background: 'rgba(139,92,246,0.3)', border: '1px solid rgba(139,92,246,0.5)' }} />
+          Mart (1)
+        </span>
+      </div>
     </div>
   );
 }

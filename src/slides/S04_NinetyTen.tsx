@@ -1,6 +1,5 @@
 import { SlideContainer } from '../deck/SlideContainer';
 import { AnimatedEntry } from '../components/AnimatedEntry';
-import { SplitCard, SplitBadge } from '../components/SplitCard';
 
 const standardized = [
   { title: 'Data Model (24 tables)', desc: '14 dimensions, 2 fact tables, 1 mart, 2 intermediate, 5 validation \u2014 same schema every time' },
@@ -16,40 +15,67 @@ const custom = [
   { title: 'Business Unit Definitions', desc: 'Entity list, cost centers, regions \u2014 often consolidated outside ERPs, loaded via spreadsheet or manual upload' },
 ];
 
+function ItemCard({ title, desc, color }: { title: string; desc: string; color: string }) {
+  return (
+    <div style={{
+      background: 'var(--navy-light)',
+      border: '1px solid rgba(255,255,255,0.06)',
+      borderLeft: `3px solid ${color}`,
+      borderRadius: 8,
+      padding: '16px 18px',
+    }}>
+      <h3 style={{ fontSize: '0.95rem', marginBottom: 6, fontWeight: 600 }}>{title}</h3>
+      <p style={{ fontSize: '0.82rem', color: 'var(--gray-400)', lineHeight: 1.5, margin: 0 }}>{desc}</p>
+    </div>
+  );
+}
+
 export function S04_NinetyTen() {
   return (
-    <SlideContainer index={3} centered={false} style={{ padding: '50px 80px' }}>
-      <AnimatedEntry style={{ textAlign: 'center', width: '100%' }}>
-        <div className="label">The Value Proposition</div>
+    <SlideContainer index={3} style={{ padding: '40px 80px' }}>
+      <AnimatedEntry>
+        <div className="label" style={{ textAlign: 'center' }}>The Value Proposition</div>
       </AnimatedEntry>
-      <AnimatedEntry delay={0.1} style={{ textAlign: 'center', width: '100%' }}>
-        <h2>~90% Standardized. ~10% Custom Per Client.</h2>
+      <AnimatedEntry delay={0.1}>
+        <h2 style={{ textAlign: 'center', fontSize: '2.2rem' }}>~90% Standardized. ~10% Custom Per Client.</h2>
       </AnimatedEntry>
-      <AnimatedEntry delay={0.2} style={{ textAlign: 'center', width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <p className="subtitle" style={{ marginBottom: 24, maxWidth: 800 }}>
+      <AnimatedEntry delay={0.2}>
+        <p className="subtitle" style={{ textAlign: 'center', marginBottom: 28, maxWidth: 800 }}>
           The data model and transformation pipeline are nearly identical across implementations.<br />
           Only the source connectors and a few mapping tables need client-specific work.
         </p>
       </AnimatedEntry>
-      <AnimatedEntry delay={0.3}>
-        <div className="two-col">
+      <AnimatedEntry delay={0.3} style={{ width: '100%', maxWidth: 1100 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, width: '100%' }}>
           <div>
-            <SplitBadge variant="standard" />
-            {standardized.map((s) => (
-              <SplitCard key={s.title} variant="standard">
-                <h3 style={{ fontSize: '1.05rem', marginBottom: 8 }}>{s.title}</h3>
-                <p style={{ fontSize: '0.88rem', color: 'var(--gray-400)', lineHeight: 1.55 }}>{s.desc}</p>
-              </SplitCard>
-            ))}
+            <div style={{
+              display: 'inline-block', fontSize: '0.7rem', fontWeight: 600,
+              textTransform: 'uppercase', letterSpacing: '0.08em',
+              padding: '4px 10px', borderRadius: 4, marginBottom: 14,
+              background: 'var(--green-dim)', color: 'var(--green)',
+            }}>
+              Standardized &mdash; Reusable Across Clients
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {standardized.map((s) => (
+                <ItemCard key={s.title} title={s.title} desc={s.desc} color="var(--green)" />
+              ))}
+            </div>
           </div>
           <div>
-            <SplitBadge variant="custom" />
-            {custom.map((c) => (
-              <SplitCard key={c.title} variant="custom">
-                <h3 style={{ fontSize: '1.05rem', marginBottom: 8 }}>{c.title}</h3>
-                <p style={{ fontSize: '0.88rem', color: 'var(--gray-400)', lineHeight: 1.55 }}>{c.desc}</p>
-              </SplitCard>
-            ))}
+            <div style={{
+              display: 'inline-block', fontSize: '0.7rem', fontWeight: 600,
+              textTransform: 'uppercase', letterSpacing: '0.08em',
+              padding: '4px 10px', borderRadius: 4, marginBottom: 14,
+              background: 'var(--amber-dim)', color: 'var(--amber)',
+            }}>
+              Custom Per Client
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {custom.map((c) => (
+                <ItemCard key={c.title} title={c.title} desc={c.desc} color="var(--amber)" />
+              ))}
+            </div>
           </div>
         </div>
       </AnimatedEntry>
