@@ -35,10 +35,10 @@ export function SlideContainer({ index, children, style }: Props) {
         alt=""
         style={{
           position: 'absolute',
-          bottom: 20,
-          right: 28,
-          height: 22,
-          opacity: 0.25,
+          top: 18,
+          right: 24,
+          height: 20,
+          opacity: 0.2,
           pointerEvents: 'none',
           userSelect: 'none',
         }}

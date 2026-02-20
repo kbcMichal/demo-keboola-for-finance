@@ -51,7 +51,7 @@ export function DeckProvider({ children }: { children: ReactNode }) {
     <DeckCtx.Provider value={{ current, total, section, goTo, next, prev, interactiveFocused, setInteractiveFocused }}>
       {children}
       <ProgressBar current={current} total={total} />
-      <SlideCounter current={current} total={total} />
+      <NextUpHint current={current} total={total} />
       <SectionIndicator activeSection={section} goTo={goTo} />
       <NavigationZones next={next} prev={prev} />
       <NavHint />
@@ -64,10 +64,33 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
   return <div style={{ position: 'fixed', bottom: 0, left: 0, height: 3, background: 'var(--blue)', width: `${pct}%`, transition: 'width 0.4s ease', zIndex: 100 }} />;
 }
 
-function SlideCounter({ current, total }: { current: number; total: number }) {
+function NextUpHint({ current, total }: { current: number; total: number }) {
+  const nextSlide = current + 1 < total ? slideMetadata[current + 1] : null;
+  const nextSection = nextSlide ? sections.find(s => s.id === nextSlide.section) : null;
+  const currentSection = sections.find(s => s.id === slideMetadata[current]?.section);
+  const isSectionChange = nextSection && currentSection && nextSection.id !== currentSection.id;
+
   return (
-    <div style={{ position: 'fixed', bottom: 16, right: 24, fontSize: 13, color: 'var(--gray-500)', zIndex: 100, fontVariantNumeric: 'tabular-nums' }}>
-      {current + 1} / {total}
+    <div style={{
+      position: 'fixed', bottom: 12, right: 24, zIndex: 100,
+      display: 'flex', alignItems: 'baseline', gap: 8,
+      fontSize: 11, color: 'var(--gray-600)', opacity: 0.7,
+      fontVariantNumeric: 'tabular-nums',
+    }}>
+      <span>{current + 1}/{total}</span>
+      {nextSlide && (
+        <>
+          <span style={{ color: 'var(--gray-700)' }}>&middot;</span>
+          <span>
+            next: {isSectionChange && (
+              <span style={{ color: 'var(--blue-light)', opacity: 0.6, marginRight: 3 }}>
+                [{nextSection!.name}]
+              </span>
+            )}
+            {nextSlide.title}
+          </span>
+        </>
+      )}
     </div>
   );
 }
