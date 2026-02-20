@@ -30,6 +30,19 @@ export function SlideContainer({ index, children, style }: Props) {
       }}
     >
       {active && children}
+      <img
+        src="./keboola-logo.png"
+        alt=""
+        style={{
+          position: 'absolute',
+          bottom: 20,
+          right: 28,
+          height: 22,
+          opacity: 0.25,
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
+      />
     </div>
   );
 }

@@ -5,6 +5,9 @@ export function S01_Title() {
   return (
     <SlideContainer index={0}>
       <AnimatedEntry>
+        <img src="./keboola-logo.png" alt="Keboola" style={{ height: 40, marginBottom: 24, opacity: 0.9 }} />
+      </AnimatedEntry>
+      <AnimatedEntry delay={0.05}>
         <div className="label">Keboola Financial Solutions</div>
       </AnimatedEntry>
       <AnimatedEntry delay={0.1}>
