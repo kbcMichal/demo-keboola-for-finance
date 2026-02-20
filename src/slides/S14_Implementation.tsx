@@ -15,17 +15,6 @@ const stats = [
   { num: '1', label: 'custom transformation' },
 ];
 
-function StepArrow() {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, flexShrink: 0 }}>
-      <svg width="24" height="12" viewBox="0 0 24 12">
-        <line x1="0" y1="6" x2="16" y2="6" stroke="var(--gray-600)" strokeWidth="1.5" />
-        <polygon points="14,2 22,6 14,10" fill="var(--gray-600)" />
-      </svg>
-    </div>
-  );
-}
-
 export function S14_Implementation() {
   return (
     <SlideContainer index={13}>
@@ -38,17 +27,30 @@ export function S14_Implementation() {
           Discovery workshop, automated scaffold, one custom transformation, iterate on data quality.
         </p>
       </AnimatedEntry>
-      <AnimatedEntry delay={0.3} style={{ width: '100%', maxWidth: 1050 }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-          {steps.map((s, i) => (
-            <div key={s.num} style={{ display: 'contents' }}>
-              {i > 0 && <StepArrow />}
-              <div style={{
-                flex: 1,
+      <AnimatedEntry delay={0.3} style={{ width: '100%', maxWidth: 1000 }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 32px 1fr 32px 1fr 32px 1fr',
+          alignItems: 'center',
+        }}>
+          {steps.map((s, i) => {
+            const elements = [];
+            if (i > 0) {
+              elements.push(
+                <div key={`arrow-${i}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="24" height="12" viewBox="0 0 24 12">
+                    <line x1="0" y1="6" x2="16" y2="6" stroke="var(--gray-600)" strokeWidth="1.5" />
+                    <polygon points="14,2 22,6 14,10" fill="var(--gray-600)" />
+                  </svg>
+                </div>
+              );
+            }
+            elements.push(
+              <div key={s.num} style={{
                 background: 'var(--navy-light)',
                 border: '1px solid rgba(255,255,255,0.06)',
                 borderRadius: 12,
-                padding: '24px 20px',
+                padding: '24px 18px',
                 textAlign: 'center',
               }}>
                 <div style={{
@@ -61,8 +63,9 @@ export function S14_Implementation() {
                 <h3 style={{ fontSize: '1.05rem', marginBottom: 8 }}>{s.title}</h3>
                 <p style={{ fontSize: '0.85rem', color: 'var(--gray-400)', lineHeight: 1.5, margin: 0 }}>{s.desc}</p>
               </div>
-            </div>
-          ))}
+            );
+            return elements;
+          })}
         </div>
       </AnimatedEntry>
       <AnimatedEntry delay={0.4}>

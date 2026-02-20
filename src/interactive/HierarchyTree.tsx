@@ -59,8 +59,8 @@ function TreeNode({ node, depth = 0 }: { node: HierarchyNode; depth?: number }) 
 
 export function HierarchyTree() {
   return (
-    <div className="two-col" style={{ maxWidth: '100%' }}>
-      <div>
+    <div className="two-col" style={{ maxWidth: '100%', textAlign: 'left' }}>
+      <div style={{ textAlign: 'left' }}>
         <h3 style={{ fontSize: '1rem', marginBottom: 12, color: 'var(--blue-light)' }}>
           Consolidation Structure (MAP_FININ_STRUCTURE)
         </h3>
@@ -73,7 +73,7 @@ export function HierarchyTree() {
           ))}
         </div>
       </div>
-      <div>
+      <div style={{ textAlign: 'left' }}>
         <h3 style={{ fontSize: '1rem', marginBottom: 12, color: 'var(--amber)' }}>
           Account Type Mapping (MAP_ACCOUNT_TYPE)
         </h3>
@@ -90,12 +90,12 @@ export function HierarchyTree() {
           ))}
         </div>
         <div style={{ marginTop: 20, padding: 12, background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: 8 }}>
-          <p style={{ fontSize: '0.78rem', color: 'var(--gray-400)' }}>
+          <p style={{ fontSize: '0.78rem', color: 'var(--gray-400)', margin: 0, textAlign: 'left' }}>
             <strong style={{ color: 'var(--amber)' }}>Tailored per ERP:</strong> Each accounting system has its own account type codes. The mapping table translates them to the 5 standard categories (A/P/R/C/X). This is what makes the pipeline ERP-agnostic.
           </p>
         </div>
         <div style={{ marginTop: 16, padding: 12, background: 'rgba(0,120,212,0.06)', border: '1px solid rgba(0,120,212,0.2)', borderRadius: 8 }}>
-          <p style={{ fontSize: '0.78rem', color: 'var(--gray-400)' }}>
+          <p style={{ fontSize: '0.78rem', color: 'var(--gray-400)', margin: 0, textAlign: 'left' }}>
             <strong style={{ color: 'var(--blue-light)' }}>Both tables can be self-served</strong> &mdash; via Google Sheets, a Data App, or direct upload. Finance updates mappings without touching SQL.
           </p>
         </div>

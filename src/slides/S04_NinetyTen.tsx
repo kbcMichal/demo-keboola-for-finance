@@ -3,20 +3,20 @@ import { AnimatedEntry } from '../components/AnimatedEntry';
 
 const rows = [
   {
-    std: { title: 'Data Model (24 tables)', desc: '14 dimensions, 2 fact tables, 1 mart, 2 intermediate, 5 validation \u2014 same schema every time' },
+    std: { title: 'Data Model (24 tables)', desc: '14 dimensions, 2 fact tables, 1 mart, 2 intermediate, 5 validation — same schema every time' },
     cust: { title: 'ERP Connectors', desc: "Configure extractors for Subsidiary, FX Rates, Chart of Accounts, and GL entries from the client's ERP" },
   },
   {
-    std: { title: '5 of 7 Transformations', desc: 'T0 Initiation, T1 COA Build, T3 Core Processing, T4 Validation, T6 KPI Metrics \u2014 zero custom SQL' },
-    cust: { title: 'T2 Journal Entry Mapping', desc: "One transformation that maps the ERP's GL schema to our standardized journal format \u2014 sign convention, keys, entity scoping" },
+    std: { title: '5 of 7 Transformations', desc: 'T0 Initiation, T1 COA Build, T3 Core Processing, T4 Validation, T6 KPI Metrics — zero custom SQL' },
+    cust: { title: 'T2 Journal Entry Mapping', desc: "One transformation that maps the ERP's GL schema to our standardized journal format — sign convention, keys, entity scoping" },
   },
   {
-    std: { title: 'CoA Hierarchy Engine', desc: 'Recursive CTE builds L1\u2013L10 levels, FININ consolidation mapping, leaf/parent flagging' },
-    cust: { title: 'MAP Tables', desc: 'Account Type mapping (A/P/R/C/X) and FININ Structure \u2014 maintained by the client or SE via Google Sheets, Data App, or direct upload' },
+    std: { title: 'CoA Hierarchy Engine', desc: 'Recursive CTE builds L1–L10 levels, FININ consolidation mapping, leaf/parent flagging' },
+    cust: { title: 'MAP Tables', desc: 'Account Type mapping (A/P/R/C/X) and FININ Structure — maintained by the client or SE via Google Sheets, Data App, or direct upload' },
   },
   {
-    std: { title: 'Validation & KPI Framework', desc: '5 quality checks + 12 metrics with RAG thresholds \u2014 all template-driven' },
-    cust: { title: 'Business Unit Definitions', desc: 'Entity list, cost centers, regions \u2014 often consolidated outside ERPs, loaded via spreadsheet or manual upload' },
+    std: { title: 'Validation & KPI Framework', desc: '5 quality checks + 12 metrics with RAG thresholds — all template-driven' },
+    cust: { title: 'Business Unit Definitions', desc: 'Entity list, cost centers, regions — often consolidated outside ERPs, loaded via spreadsheet or manual upload' },
   },
 ];
 
@@ -54,9 +54,9 @@ export function S04_NinetyTen() {
         </p>
       </AnimatedEntry>
       <AnimatedEntry delay={0.3} style={{ width: '100%', maxWidth: 1080 }}>
-        {/* Column headers */}
+        {/* Column headers — centered above their respective columns */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28, marginBottom: 12 }}>
-          <div>
+          <div style={{ textAlign: 'center' }}>
             <span style={{
               display: 'inline-block', fontSize: '0.68rem', fontWeight: 600,
               textTransform: 'uppercase', letterSpacing: '0.08em',
@@ -66,7 +66,7 @@ export function S04_NinetyTen() {
               Standardized &mdash; Reusable Across Clients
             </span>
           </div>
-          <div>
+          <div style={{ textAlign: 'center' }}>
             <span style={{
               display: 'inline-block', fontSize: '0.68rem', fontWeight: 600,
               textTransform: 'uppercase', letterSpacing: '0.08em',

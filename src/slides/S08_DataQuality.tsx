@@ -39,10 +39,10 @@ export function S08_DataQuality() {
               }}>
                 <span style={{ color: c.color }}>{c.icon}</span>
               </div>
-              <div style={{ flex: 1 }}>
+              <div style={{ minWidth: 180, flexShrink: 0 }}>
                 <span style={{ fontSize: '0.95rem', fontWeight: 600 }}>{c.title}</span>
               </div>
-              <span style={{ fontSize: '0.85rem', color: 'var(--gray-400)', maxWidth: 340, textAlign: 'right' }}>
+              <span style={{ fontSize: '0.85rem', color: 'var(--gray-400)', textAlign: 'left' }}>
                 {c.desc}
               </span>
             </div>
