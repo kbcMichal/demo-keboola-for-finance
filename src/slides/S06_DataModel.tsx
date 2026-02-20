@@ -7,7 +7,7 @@ import { TransformationRules } from '../interactive/TransformationRules';
 
 export function S06_DataModel() {
   return (
-    <SlideContainer index={5} style={{ padding: '36px 60px', justifyContent: 'flex-start', paddingTop: 44 }}>
+    <SlideContainer index={6} style={{ padding: '36px 60px', justifyContent: 'flex-start', paddingTop: 44 }}>
       <AnimatedEntry>
         <div className="label">The Foundation</div>
       </AnimatedEntry>
